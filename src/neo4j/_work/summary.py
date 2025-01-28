@@ -805,8 +805,6 @@ class GqlStatusObject:
         The position of the input that caused the status (if applicable).
 
         This is vendor-specific information.
-        If not provided, it defaults to :class:`SummaryInputPosition`'s
-        default.
 
         Only notifications (see :attr:`.is_notification`) have a meaningful
         position.
