@@ -431,7 +431,7 @@ class SummaryInputPosition:
     offset: int
 
     @classmethod
-    def _from_metadata(cls, metadata: t.Any) -> te.Self | None:
+    def _from_metadata(cls, metadata: object) -> te.Self | None:
         if not isinstance(metadata, dict):
             return None
         line = metadata.get("line")
@@ -515,7 +515,7 @@ class SummaryNotification:
     position: SummaryNotificationPosition | None = None
 
     @classmethod
-    def _from_metadata(cls, metadata: t.Any) -> te.Self:
+    def _from_metadata(cls, metadata: object) -> te.Self:
         if not isinstance(metadata, dict):
             return cls()
         kwargs: _SummaryNotificationKwargs = {
@@ -631,7 +631,7 @@ class GqlStatusObject:
         return obj
 
     @classmethod
-    def _from_status_metadata(cls, metadata: t.Any) -> te.Self:
+    def _from_status_metadata(cls, metadata: object) -> te.Self:
         obj = cls()
         if isinstance(metadata, dict):
             obj._status_metadata = metadata
@@ -640,7 +640,7 @@ class GqlStatusObject:
         return obj
 
     @classmethod
-    def _from_notification_metadata(cls, metadata: t.Any) -> te.Self:
+    def _from_notification_metadata(cls, metadata: object) -> te.Self:
         obj = cls()
         if not isinstance(metadata, dict):
             metadata = {}
