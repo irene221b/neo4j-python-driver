@@ -25,6 +25,9 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
 - Changed errors raised under certain circumstances
   - `ConfigurationError` if the passed `auth` parameters is not valid (instead of `AuthError`)
     - This improves the differentiation between `DriverError` for client-side errors and `Neo4jError` for server-side errors.
+  - `access_mode` configuration option
+    - `ValueError` on invalid value (instead of `ClientError`)
+    - Consistently check the value (also for non-routing drivers)
 
 
 ## Version 5.28
