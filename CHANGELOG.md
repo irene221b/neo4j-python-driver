@@ -22,6 +22,9 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
 - Remove deprecated exports from `neo4j`:
   - `log`, `Config`, `PoolConfig`, `SessionConfig`, `WorkspaceConfig` (internal - no replacement)
   - `SummaryNotificationPosition` (use `SummaryInputPosition` instead)
+- Changed errors raised under certain circumstances
+  - `ConfigurationError` if the passed `auth` parameters is not valid (instead of `AuthError`)
+    - This improves the differentiation between `DriverError` for client-side errors and `Neo4jError` for server-side errors.
 
 
 ## Version 5.28
