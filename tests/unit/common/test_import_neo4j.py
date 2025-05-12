@@ -84,7 +84,6 @@ NEO4J_ATTRIBUTES = (
     ("TrustCustomCAs", None),
     ("TrustSystemCAs", None),
     ("unit_of_work", None),
-    ("Version", None),
     ("WRITE_ACCESS", None),
 )
 

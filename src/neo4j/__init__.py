@@ -103,7 +103,6 @@ from .api import (
     SYSTEM_DATABASE,
     TRUST_ALL_CERTIFICATES,
     TRUST_SYSTEM_CA_SIGNED_CERTIFICATES,
-    Version,
     WRITE_ACCESS,
 )
 
@@ -159,7 +158,6 @@ __all__ = [
     "TrustAll",
     "TrustCustomCAs",
     "TrustSystemCAs",
-    "Version",
     "__version__",
     "basic_auth",
     "bearer_auth",

@@ -22,12 +22,21 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
 - Remove deprecated exports from `neo4j`:
   - `log`, `Config`, `PoolConfig`, `SessionConfig`, `WorkspaceConfig` (internal - no replacement)
   - `SummaryNotificationPosition` (use `SummaryInputPosition` instead)
+- `api.Version` has been removed as it's unused now.  
+  `ServerInfo.protocol_version` now is a `tuple[int, int]` insteadof a `api.Version`.
+  This should be drop-in replacement is most cases:
+  - `Version` was a sup-type of `tuple[int, int]`
+  - `ServerInfo.protocol_version` was already documented and typed as `tuple[int, int]`
+  - `Version`'s additional methods were undocumented and shouldn't have been used
 - Changed errors raised under certain circumstances
   - `ConfigurationError` if the passed `auth` parameters is not valid (instead of `AuthError`)
     - This improves the differentiation between `DriverError` for client-side errors and `Neo4jError` for server-side errors.
   - `access_mode` configuration option
     - `ValueError` on invalid value (instead of `ClientError`)
     - Consistently check the value (also for non-routing drivers)
+  - `neo4j.exceptions.UnsupportedServerProduct` if no common bolt protocol version could be negotiated with the server
+   (instead of internal `neo4j._exceptions.BoltHandshakeError`).  
+    `UnsupportedServerProduct` is now a subclass of `ServiceUnavailable` (instead of `Exception` directly).
 
 
 ## Version 5.28
