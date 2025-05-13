@@ -19,6 +19,7 @@ from __future__ import annotations
 import abc
 import asyncio
 import logging
+import math
 import typing as t
 from collections import (
     defaultdict,
@@ -667,6 +668,7 @@ class BoltPool(IOPool):
         # The access_mode and database is not needed for a direct connection,
         # it's just there for consistency.
         access_mode = check_access_mode(access_mode)
+        _check_acquisition_timeout(timeout)
         log.debug(
             "[#0000]  _: <POOL> acquire direct connection, "
             "access_mode=%r, database=%r",
@@ -969,6 +971,7 @@ class Neo4jPool(IOPool):
 
         :raise neo4j.exceptions.ServiceUnavailable:
         """
+        _check_acquisition_timeout(acquisition_timeout)
         with self.refresh_lock:
             routing_table = self.get_routing_table(database)
             if routing_table is not None:
@@ -1146,11 +1149,7 @@ class Neo4jPool(IOPool):
         database_callback=None,
     ):
         access_mode = check_access_mode(access_mode)
-        if not timeout:
-            # TODO: 6.0 - change this to be a ValueError
-            raise ClientError(
-                f"'timeout' must be a float larger than 0; {timeout}"
-            )
+        _check_acquisition_timeout(timeout)
 
         target_database = database.name
 
@@ -1243,3 +1242,17 @@ class Neo4jPool(IOPool):
             if table is not None:
                 table.writers.discard(address)
         log.debug("[#0000]  _: <POOL> table=%r", self.routing_tables)
+
+
+def _check_acquisition_timeout(timeout: object) -> None:
+    if not isinstance(timeout, (int, float)):
+        raise TypeError(
+            "Connection acquisition timeout must be a number, "
+            f"got {type(timeout)}"
+        )
+    if timeout <= 0:
+        raise ValueError(
+            f"Connection acquisition timeout must be > 0, got {timeout}"
+        )
+    if math.isnan(timeout):
+        raise ValueError("Connection acquisition timeout must not be NaN")
