@@ -54,6 +54,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
       is already active.
 - Remove deprecated `Record.__getslice__`. This magic method has been removed in Python 3.0.  
   If you were calling it directly, please use `Record.__getitem__(slice(...))` or simply `record[...]` instead.
+- Remove deprecated class `neo4j.Bookmark` in favor of `neo4j.Bookmarks`.
+- Remove deprecated class `session.last_bookmark()` in favor of `last_bookmarks()`.
 
 
 ## Version 5.28
