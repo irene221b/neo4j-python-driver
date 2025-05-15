@@ -52,6 +52,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
       errors.
     - It is now the same error raised as when trying to start an explicit transaction while another explicit transaction
       is already active.
+- Remove deprecated `Record.__getslice__`. This magic method has been removed in Python 3.0.  
+  If you were calling it directly, please use `Record.__getitem__(slice(...))` or simply `record[...]` instead.
 
 
 ## Version 5.28
