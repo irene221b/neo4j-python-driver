@@ -67,8 +67,6 @@ from ..api import (
     parse_routing_context,
     READ_ACCESS,
     ServerInfo,
-    TRUST_ALL_CERTIFICATES,
-    TRUST_SYSTEM_CA_SIGNED_CERTIFICATES,
     URI_SCHEME_BOLT,
     URI_SCHEME_BOLT_SECURE,
     URI_SCHEME_BOLT_SELF_SIGNED_CERTIFICATE,
@@ -133,10 +131,6 @@ class GraphDatabase:
             liveness_check_timeout: float | None = ...,
             max_connection_pool_size: int = ...,
             connection_timeout: float = ...,
-            trust: (
-                te.Literal["TRUST_ALL_CERTIFICATES"]
-                | te.Literal["TRUST_SYSTEM_CA_SIGNED_CERTIFICATES"]
-            ) = ...,
             resolver: (
                 t.Callable[[Address], t.Iterable[Address]]
                 | t.Callable[[Address], t.Union[t.Iterable[Address]]]
@@ -212,20 +206,6 @@ class GraphDatabase:
                     _StaticClientCertificateProvider(client_certificate)
                 )
 
-            # TODO: 6.0 - remove "trust" config option
-            if "trust" in config and config["trust"] not in {
-                TRUST_ALL_CERTIFICATES,
-                TRUST_SYSTEM_CA_SIGNED_CERTIFICATES,
-            }:
-                raise ConfigurationError(
-                    "The config setting `trust` values are {!r}".format(
-                        [
-                            TRUST_ALL_CERTIFICATES,
-                            TRUST_SYSTEM_CA_SIGNED_CERTIFICATES,
-                        ]
-                    )
-                )
-
             if "trusted_certificates" in config and not isinstance(
                 config["trusted_certificates"], TrustStore
             ):
@@ -242,16 +222,14 @@ class GraphDatabase:
                 SECURITY_TYPE_SECURE,
             } and (
                 "encrypted" in config
-                or "trust" in config
                 or "trusted_certificates" in config
                 or "ssl_context" in config
             ):
-                # TODO: 6.0 - remove "trust" from error message
                 raise ConfigurationError(
-                    'The config settings "encrypted", "trust", '
-                    '"trusted_certificates", and "ssl_context" can only be '
-                    "used with the URI schemes {!r}. Use the other URI "
-                    "schemes {!r} for setting encryption settings.".format(
+                    'The config settings "encrypted", "trusted_certificates", '
+                    'and "ssl_context" can only be used with the URI schemes '
+                    "{!r}. Use the other URI schemes {!r} for setting "
+                    "encryption settings.".format(
                         [
                             URI_SCHEME_BOLT,
                             URI_SCHEME_NEO4J,
