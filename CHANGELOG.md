@@ -78,7 +78,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `ERROR_REWRITE_MAP`
     - `client_errors`
     - `transient_errors`
-
+- Raise `ConfigurationError` instead of ignoring the routing context (URI query parameters) when creating a direct
+  driver ("bolt[+s[sc]]://" scheme).
 
 ## Version 5.28
 - Since the types of `Relationship`s are tied to the `Graph` object they belong to, fixing `pickle` support for graph types means that `Relationship`s with the same name will have a different type after `deepcopy`ing or pickling and unpickling them or their graph.
