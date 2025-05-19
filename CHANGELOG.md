@@ -95,6 +95,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - Calling `driver.close()` again is now a no-op.
 - No longer implicitly closing drivers and sessions in `__del__()` (finalizer/destructor).
   Make sure to call `.close()` on them explicitly or use them in a `with` statement.
+- Make `Summary.summary_notifications` a `tuple` instead of a `list` and type it with `Sequence` to signify that it
+  should be treated as immutable.
 
 
 ## Version 5.28
