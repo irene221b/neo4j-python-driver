@@ -52,6 +52,14 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
       errors.
     - It is now the same error raised as when trying to start an explicit transaction while another explicit transaction
       is already active.
+- Slightly change `Neo4jError` and `ClientError`:
+    - Properties `message` and `code` are always a `str` (instead of `str | None`).
+    - Remove possibility to override/set `message` and `code` properties.
+    - Remove undocumented, internal methods `Neo4jError.hydrate`, `Neo4jError.invalidates_all_connections`,
+      and `Neo4jError.is_fatal_during_discovery`.
+    - Remove deprecated method `Neo4jError.is_retriable`.
+      Use `Neo4jError.is_retryable` instead.
+    - Change string representation of `Neo4jError` to include GQL error information.
 - Remove deprecated `Record.__getslice__`. This magic method has been removed in Python 3.0.  
   If you were calling it directly, please use `Record.__getitem__(slice(...))` or simply `record[...]` instead.
 - Remove deprecated class `neo4j.Bookmark` in favor of `neo4j.Bookmarks`.
@@ -80,6 +88,7 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `transient_errors`
 - Raise `ConfigurationError` instead of ignoring the routing context (URI query parameters) when creating a direct
   driver ("bolt[+s[sc]]://" scheme).
+
 
 ## Version 5.28
 - Since the types of `Relationship`s are tied to the `Graph` object they belong to, fixing `pickle` support for graph types means that `Relationship`s with the same name will have a different type after `deepcopy`ing or pickling and unpickling them or their graph.
