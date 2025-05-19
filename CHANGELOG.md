@@ -88,6 +88,9 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `transient_errors`
 - Raise `ConfigurationError` instead of ignoring the routing context (URI query parameters) when creating a direct
   driver ("bolt[+s[sc]]://" scheme).
+- Change behavior of closed drivers:
+    - Raise `DriverError` on using the closed driver.
+    - Calling `driver.close()` again is now a no-op.
 
 
 ## Version 5.28

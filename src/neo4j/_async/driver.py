@@ -82,7 +82,10 @@ from ..auth_management import (
     AsyncClientCertificateProvider,
     ClientCertificate,
 )
-from ..exceptions import Neo4jError
+from ..exceptions import (
+    DriverError,
+    Neo4jError,
+)
 from .auth_management import _AsyncStaticClientCertificateProvider
 from .bookmark_manager import (
     AsyncNeo4jBookmarkManager,
@@ -526,13 +529,7 @@ class AsyncDriver:
 
     def _check_state(self):
         if self._closed:
-            # TODO: 6.0 - raise the error
-            # raise DriverError("Driver closed")
-            deprecation_warn(
-                "Using a driver after it has been closed is deprecated. "
-                "Future versions of the driver will raise an error.",
-                stack_level=3,
-            )
+            raise DriverError("Driver closed")
 
     @property
     def encrypted(self) -> bool:
@@ -584,6 +581,11 @@ class AsyncDriver:
                 key-word arguments.
 
             :returns: new :class:`neo4j.AsyncSession` object
+
+            :raises DriverError: if the driver has been closed.
+
+            .. versionchanged:: 6.0
+                Raise :exc:`DriverError` if the driver has been closed.
             """
             if "warn_notification_severity" in config:
                 # Would work just fine, but we don't want to introduce yet
@@ -621,9 +623,8 @@ class AsyncDriver:
             spawned from it (such as sessions or transactions) while calling
             this method. Failing to do so results in unspecified behavior.
         """
-        # TODO: 6.0 - NOOP if already closed
-        # if self._closed:
-        #     return
+        if self._closed:
+            return
         try:
             await self._pool.close()
         except asyncio.CancelledError:
@@ -887,6 +888,8 @@ class AsyncDriver:
         :returns: the result of the ``result_transformer_``
         :rtype: T
 
+        :raises DriverError: if the driver has been closed.
+
         .. versionadded:: 5.5
 
         .. versionchanged:: 5.8
@@ -900,6 +903,9 @@ class AsyncDriver:
         .. versionchanged:: 5.15
             The ``query_`` parameter now also accepts a :class:`.Query` object
             instead of only :class:`str`.
+
+        .. versionchanged:: 6.0
+            Raise :exc:`DriverError` if the driver has been closed.
         '''  # noqa: E501 example code isn't too long
         self._check_state()
         invalid_kwargs = [
@@ -1043,11 +1049,15 @@ class AsyncDriver:
             :raises Exception: if the driver cannot connect to the remote.
                 Use the exception to further understand the cause of the
                 connectivity problem.
+            :raises DriverError: if the driver has been closed.
 
             .. versionchanged:: 5.0
                 The undocumented return value has been removed.
                 If you need information about the remote server, use
                 :meth:`get_server_info` instead.
+
+            .. versionchanged:: 6.0
+                Raise :exc:`DriverError` if the driver has been closed.
             """
             self._check_state()
             if config:
@@ -1120,8 +1130,12 @@ class AsyncDriver:
             :raises Exception: if the driver cannot connect to the remote.
                 Use the exception to further understand the cause of the
                 connectivity problem.
+            :raises DriverError: if the driver has been closed.
 
             .. versionadded:: 5.0
+
+            .. versionchanged:: 6.0
+                Raise :exc:`DriverError` if the driver has been closed.
             """
             self._check_state()
             if config:
@@ -1136,15 +1150,20 @@ class AsyncDriver:
         """
         Check if the server or cluster supports multi-databases.
 
-        :returns: Returns true if the server or cluster the driver connects to
-            supports multi-databases, otherwise false.
-
         .. note::
             Feature support query based solely on the Bolt protocol version.
             The feature might still be disabled on the server side even if this
             function return :data:`True`. It just guarantees that the driver
             won't throw a :exc:`.ConfigurationError` when trying to use this
             driver feature.
+
+        :returns: Returns true if the server or cluster the driver connects to
+            supports multi-databases, otherwise false.
+
+        :raises DriverError: if the driver has been closed.
+
+        .. versionchanged:: 6.0
+            Raise :exc:`DriverError` if the driver has been closed.
         """
         self._check_state()
         session_config = self._read_session_config({})
@@ -1212,10 +1231,14 @@ class AsyncDriver:
             :raises Exception: if the driver cannot connect to the remote.
                 Use the exception to further understand the cause of the
                 connectivity problem.
+            :raises DriverError: if the driver has been closed.
 
             .. versionadded:: 5.8
 
             .. versionchanged:: 5.14 Stabilized from experimental.
+
+            .. versionchanged:: 6.0
+                Raise :exc:`DriverError` if the driver has been closed.
             """
             self._check_state()
             if config:
@@ -1245,10 +1268,6 @@ class AsyncDriver:
         """
         Check if the remote supports connection re-authentication.
 
-        :returns: Returns true if the server or cluster the driver connects to
-            supports re-authentication of existing connections, otherwise
-            false.
-
         .. note::
             Feature support query based solely on the Bolt protocol version.
             The feature might still be disabled on the server side even if this
@@ -1256,7 +1275,16 @@ class AsyncDriver:
             won't throw a :exc:`.ConfigurationError` when trying to use this
             driver feature.
 
+        :returns: Returns true if the server or cluster the driver connects to
+            supports re-authentication of existing connections, otherwise
+            false.
+
+        :raises DriverError: if the driver has been closed.
+
         .. versionadded:: 5.8
+
+        .. versionchanged:: 6.0
+            Raise :exc:`DriverError` if the driver has been closed.
         """
         self._check_state()
         session_config = self._read_session_config({})
