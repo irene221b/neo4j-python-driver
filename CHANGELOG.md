@@ -91,6 +91,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
 - Change behavior of closed drivers:
     - Raise `DriverError` on using the closed driver.
     - Calling `driver.close()` again is now a no-op.
+- No longer implicitly closing drivers and sessions in `__del__()` (finalizer/destructor).
+  Make sure to call `.close()` on them explicitly or use them in a `with` statement.
 
 
 ## Version 5.28
