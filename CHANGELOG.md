@@ -67,6 +67,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
 - Remove deprecated driver configuration option `trust`.  
   Use `trusted_certificates` instead.
   - Remove the associated constants `neo4j.TRUST_ALL_CERTIFICATES` and `neo4j.TRUST_SYSTEM_CA_SIGNED_CERTIFICATES`.
+- Remove deprecated `session.read_transaction` and `session.write_transaction`.
+  Instead, use `session.execute_read` and  `session.execute_write` respectively.
 - Make undocumented classes `ResolvedAddress`, `ResolvedIPv4Address`, and `ResolvedIPv6Address` private.
 - Rework `PreviewWarning`.
   - Remove `ExperimentalWarning` and turn the few left instances of it into `PreviewWarning`.
