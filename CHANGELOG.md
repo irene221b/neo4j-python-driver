@@ -100,6 +100,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
   Make sure to call `.close()` on them explicitly or use them in a `with` statement.
 - Make `Summary.summary_notifications` a `tuple` instead of a `list` and type it with `Sequence` to signify that it
   should be treated as immutable.
+- Graph type sets (`neo4j.graph.EntitySetView`) can no longer by indexed by legacy `id` (`int`, e.g., `graph.nodes[0]`).  
+  Use the `element_id` instead (`str`, e.g., `graph.nodes["..."]`).
 
 
 ## Version 5.28
