@@ -91,15 +91,19 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `ERROR_REWRITE_MAP`
     - `client_errors`
     - `transient_errors`
-  - `GraphDatabase`
-      - `.bolt_driver`
-      - `.neo4j_driver`
-  - `BoltDriver` and `Neo4jDriver`
-      - `.open`
-      - `.parse_target`
-      - `.default_host`
-      - `.default_port`
-      - `.default_target`
+  - `neo4j.spatial`
+    - `hydrate_point`
+    - `dehydrate_point`
+    - `point_type`
+  - `neo4j.GraphDatabase`
+    - `.bolt_driver`
+    - `.neo4j_driver`
+  - `neo4j.BoltDriver` and `neo4j.Neo4jDriver`
+    - `.open`
+    - `.parse_target`
+    - `.default_host`
+    - `.default_port`
+    - `.default_target`
 - Raise `ConfigurationError` instead of ignoring the routing context (URI query parameters) when creating a direct
   driver ("bolt[+s[sc]]://" scheme).
 - Change behavior of closed drivers:
