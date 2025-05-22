@@ -104,7 +104,7 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `.default_host`
     - `.default_port`
     - `.default_target`
-  - `neo4j.graph`, `neo4j.addressing`
+  - `neo4j.graph`, `neo4j.addressing`, `neo4j.api`
     - indirectly exposed items from imports (e.g. `collections.abc.Mapping` as `neo4j.graph.Mapping`).
 - Raise `ConfigurationError` instead of ignoring the routing context (URI query parameters) when creating a direct
   driver ("bolt[+s[sc]]://" scheme).
