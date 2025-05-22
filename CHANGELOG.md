@@ -91,6 +91,7 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `ERROR_REWRITE_MAP`
     - `client_errors`
     - `transient_errors`
+    - all other indirectly exposed items from imports (e.g. `typing` as `neo4j.exceptions.t`)
   - `neo4j.spatial`
     - `hydrate_point`
     - `dehydrate_point`
