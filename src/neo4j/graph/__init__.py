@@ -16,17 +16,17 @@
 
 """Graph data types as returned by the DBMS."""
 
-from __future__ import annotations
+from __future__ import annotations as _
 
-from collections.abc import Mapping
+from collections.abc import Mapping as _Mapping
 
 from .. import _typing as _t
 
 
 if _t.TYPE_CHECKING:
-    from typing_extensions import deprecated
+    from typing_extensions import deprecated as _deprecated
 else:
-    from .._warnings import deprecated
+    from .._warnings import deprecated as _deprecated
 
 
 __all__ = [
@@ -151,7 +151,7 @@ class Entity(_t.Mapping[str, _t.Any]):
         return self._graph
 
     @property  # type: ignore
-    @deprecated("`id` is deprecated, use `element_id` instead")
+    @_deprecated("`id` is deprecated, use `element_id` instead")
     def id(self) -> int:
         """
         The legacy identity of this entity in its container :class:`.Graph`.
@@ -200,7 +200,7 @@ class Entity(_t.Mapping[str, _t.Any]):
         return self._properties.items()
 
 
-class EntitySetView(Mapping, _t.Generic[_T]):
+class EntitySetView(_Mapping, _t.Generic[_T]):
     """View of a set of :class:`.Entity` instances within a :class:`.Graph`."""
 
     def __init__(

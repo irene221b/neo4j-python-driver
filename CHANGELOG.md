@@ -98,6 +98,7 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `ERROR_REWRITE_MAP`
     - `client_errors`
     - `transient_errors`
+    - all other indirectly exposed items from imports (e.g. `typing` as `neo4j.exceptions.t`)
   - `neo4j.time`
     - `DATE_ISO_PATTERN`
     - `TIME_ISO_PATTERN`
@@ -128,6 +129,8 @@ See also https://github.com/neo4j/neo4j-python-driver/wiki for a full changelog.
     - `.default_host`
     - `.default_port`
     - `.default_target`
+  - `neo4j.graph`, `neo4j.addressing`, `neo4j.api`
+    - indirectly exposed items from imports (e.g. `collections.abc.Mapping` as `neo4j.graph.Mapping`).
   - `BoltDriver` and `Neo4jDriver`
     - `.open`
     - `.parse_target`
