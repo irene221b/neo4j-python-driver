@@ -62,18 +62,14 @@ Driver API Errors
 
 from __future__ import annotations as _
 
-import typing as _t
 from copy import deepcopy as _deepcopy
 from enum import Enum as _Enum
 
+from . import _typing as _t
 from ._warnings import preview as _preview
 
 
 if _t.TYPE_CHECKING:
-    from collections.abc import Mapping as _Mapping
-
-    import typing_extensions as _te
-
     from ._async.work import (
         AsyncManagedTransaction as _AsyncManagedTransaction,
         AsyncResult as _AsyncResult,
@@ -138,9 +134,9 @@ __all__ = [
 ]
 
 
-_CLASSIFICATION_CLIENT: _te.Final[str] = "ClientError"
-_CLASSIFICATION_TRANSIENT: _te.Final[str] = "TransientError"
-_CLASSIFICATION_DATABASE: _te.Final[str] = "DatabaseError"
+_CLASSIFICATION_CLIENT: _t.Final[str] = "ClientError"
+_CLASSIFICATION_TRANSIENT: _t.Final[str] = "TransientError"
+_CLASSIFICATION_DATABASE: _t.Final[str] = "DatabaseError"
 
 
 _ERROR_REWRITE_MAP: dict[str, tuple[str, str | None]] = {
@@ -167,18 +163,18 @@ _ERROR_REWRITE_MAP: dict[str, tuple[str, str | None]] = {
 }
 
 
-_UNKNOWN_NEO4J_CODE: _te.Final[str] = "Neo.DatabaseError.General.UnknownError"
+_UNKNOWN_NEO4J_CODE: _t.Final[str] = "Neo.DatabaseError.General.UnknownError"
 # TODO: 7.0 - Make _UNKNOWN_GQL_MESSAGE the default message
-_UNKNOWN_MESSAGE: _te.Final[str] = "An unknown error occurred"
-_UNKNOWN_GQL_STATUS: _te.Final[str] = "50N42"
-_UNKNOWN_GQL_DESCRIPTION: _te.Final[str] = (
+_UNKNOWN_MESSAGE: _t.Final[str] = "An unknown error occurred"
+_UNKNOWN_GQL_STATUS: _t.Final[str] = "50N42"
+_UNKNOWN_GQL_DESCRIPTION: _t.Final[str] = (
     "error: general processing exception - unexpected error"
 )
-_UNKNOWN_GQL_MESSAGE: _te.Final[str] = (
+_UNKNOWN_GQL_MESSAGE: _t.Final[str] = (
     f"{_UNKNOWN_GQL_STATUS}: "
     "Unexpected error has occurred. See debug log for details."
 )
-_UNKNOWN_GQL_DIAGNOSTIC_RECORD: _te.Final[tuple[tuple[str, _t.Any], ...]] = (
+_UNKNOWN_GQL_DIAGNOSTIC_RECORD: _t.Final[tuple[tuple[str, _t.Any], ...]] = (
     ("OPERATION", ""),
     ("OPERATION_CODE", "0"),
     ("CURRENT_SCHEMA", "/"),
@@ -458,7 +454,7 @@ class GqlError(Exception):
         return self._status_diagnostic_record
 
     @property
-    def _diagnostic_record_no_preview(self) -> _Mapping[str, _t.Any]:
+    def _diagnostic_record_no_preview(self) -> _t.Mapping[str, _t.Any]:
         if hasattr(self, "_diagnostic_record"):
             return self._diagnostic_record
 
@@ -469,7 +465,7 @@ class GqlError(Exception):
 
     @property
     @_preview("GQLSTATUS support is a preview feature.")
-    def diagnostic_record(self) -> _Mapping[str, _t.Any]:
+    def diagnostic_record(self) -> _t.Mapping[str, _t.Any]:
         return self._diagnostic_record_no_preview
 
     def __str__(self):

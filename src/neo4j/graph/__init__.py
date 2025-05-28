@@ -18,8 +18,9 @@
 
 from __future__ import annotations as _
 
-import typing as _t
 from collections.abc import Mapping as _Mapping
+
+from .. import _typing as _t
 
 
 if _t.TYPE_CHECKING:

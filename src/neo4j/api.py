@@ -19,23 +19,16 @@
 from __future__ import annotations as _
 
 import abc as _abc
-import typing as _t
+
+from . import _typing as _t
 
 # ignore TCH001 to make sphinx not completely drop the ball
 from ._addressing import Address as _Address  # noqa: TCH001
 
 
 if _t.TYPE_CHECKING:
-    import typing_extensions as _te
-    from typing_extensions import (
-        deprecated as _deprecated,
-        Protocol as _Protocol,
-    )
-
-
+    from ._typing import Protocol as _Protocol
 else:
-    from ._warnings import deprecated as _deprecated
-
     _Protocol = object
 
 
@@ -64,21 +57,21 @@ __all__ = [
 ]
 
 
-READ_ACCESS: _te.Final[str] = "READ"
-WRITE_ACCESS: _te.Final[str] = "WRITE"
+READ_ACCESS: _t.Final[str] = "READ"
+WRITE_ACCESS: _t.Final[str] = "WRITE"
 
-URI_SCHEME_BOLT: _te.Final[str] = "bolt"
-URI_SCHEME_BOLT_SELF_SIGNED_CERTIFICATE: _te.Final[str] = "bolt+ssc"
-URI_SCHEME_BOLT_SECURE: _te.Final[str] = "bolt+s"
+URI_SCHEME_BOLT: _t.Final[str] = "bolt"
+URI_SCHEME_BOLT_SELF_SIGNED_CERTIFICATE: _t.Final[str] = "bolt+ssc"
+URI_SCHEME_BOLT_SECURE: _t.Final[str] = "bolt+s"
 
-URI_SCHEME_NEO4J: _te.Final[str] = "neo4j"
-URI_SCHEME_NEO4J_SELF_SIGNED_CERTIFICATE: _te.Final[str] = "neo4j+ssc"
-URI_SCHEME_NEO4J_SECURE: _te.Final[str] = "neo4j+s"
+URI_SCHEME_NEO4J: _t.Final[str] = "neo4j"
+URI_SCHEME_NEO4J_SELF_SIGNED_CERTIFICATE: _t.Final[str] = "neo4j+ssc"
+URI_SCHEME_NEO4J_SECURE: _t.Final[str] = "neo4j+s"
 
-URI_SCHEME_BOLT_ROUTING: _te.Final[str] = "bolt+routing"
+URI_SCHEME_BOLT_ROUTING: _t.Final[str] = "bolt+routing"
 
-SYSTEM_DATABASE: _te.Final[str] = "system"
-DEFAULT_DATABASE: _te.Final[None] = None  # Must be a non string hashable value
+SYSTEM_DATABASE: _t.Final[str] = "system"
+DEFAULT_DATABASE: _t.Final[None] = None  # Must be a non string hashable value
 
 
 # TODO: This class is not tested
@@ -129,8 +122,7 @@ class Auth:
 # For backwards compatibility
 AuthToken = Auth
 
-if _t.TYPE_CHECKING:
-    _TAuth: _t.TypeAlias = tuple[str, str] | Auth | None
+_TAuth: _t.TypeAlias = tuple[str, str] | Auth | None
 
 
 def basic_auth(user: str, password: str, realm: str | None = None) -> Auth:
@@ -313,15 +305,6 @@ class ServerInfo:
     def agent(self) -> str:
         """Server agent string by which the remote server identifies itself."""
         return str(self._metadata.get("server"))
-
-    @property  # type: ignore
-    @_deprecated(
-        "The connection id is considered internal information "
-        "and will no longer be exposed in future versions."
-    )
-    def connection_id(self):
-        """Unique identifier for the remote server connection."""
-        return self._metadata.get("connection_id")
 
     def update(self, metadata: dict) -> None:
         """
