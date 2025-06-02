@@ -113,7 +113,7 @@ class Auth:
         if parameters:
             self.parameters = parameters
 
-    def __eq__(self, other: _t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Auth):
             return NotImplemented
         return vars(self) == vars(other)
